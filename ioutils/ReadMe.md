@@ -1,0 +1,3 @@
+# IOUtils
+
+包括一个从开源项目里抄来的一个CopyUtils和网上抄来的Base64的Inputstream和outputStream。
