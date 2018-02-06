@@ -36,7 +36,6 @@ public class ProxyPool extends ArrayList<Proxy> {
             this.add(proxy);
         } catch (Exception ex) {
         }
-
     }
 
 }
