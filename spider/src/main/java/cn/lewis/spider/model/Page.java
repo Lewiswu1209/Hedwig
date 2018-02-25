@@ -1,9 +1,9 @@
 package cn.lewis.spider.model;
 
-import org.hedwig.utility.collection.ListUtils;
-import org.hedwig.utility.text.CharsetDetector;
+import org.hedwig.textutils.CharsetDetector;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,8 +97,14 @@ public class Page {
     }
 
     public String selectText(String cssSelector, int index){
-        return ListUtils.getByIndex(selectTextList(cssSelector),index);
+        List<String> list = selectTextList(cssSelector);
+    	int realIndex = index;
+        if (index < 0) {
+            realIndex = list.size() + index;
+        }
+        return list.get(realIndex);
     }
+
     public String selectText(String cssSelector) {
         return select(cssSelector).first().text();
     }

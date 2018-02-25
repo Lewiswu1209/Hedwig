@@ -7,11 +7,14 @@ import cn.lewis.spider.model.CrawlerItemList;
 import cn.lewis.spider.model.Links;
 import cn.lewis.spider.model.RegexRule;
 import cn.lewis.spider.model.Page;
+
+import org.hedwig.net.http.HttpClient;
+import org.hedwig.net.http.HttpGet;
+import org.hedwig.net.http.HttpRequest;
+import org.hedwig.net.http.HttpResponse;
 import org.jsoup.nodes.Document;
 
 import java.net.HttpURLConnection;
-
-import org.hedwig.utility.net.http.*;
 
 public abstract class Crawler extends AbstractCrawler implements Executor, Visitor {
 
