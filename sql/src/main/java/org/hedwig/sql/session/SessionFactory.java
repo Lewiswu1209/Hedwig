@@ -15,6 +15,8 @@ public class SessionFactory {
 		if (session == null) {
 			Connection conn = dataSource.getConnection();
 			session = new Session(conn);
+			session.setSessionFactory(this);
+			threadLocal.set(session);
 		}
 		return session;
 	}
@@ -25,11 +27,11 @@ public class SessionFactory {
 		return session;
 	}
 
-	protected DataSource getDataSource() {
+	public DataSource getDataSource() {
 		return dataSource;
 	}
 
-	protected void setDataSource(DataSource dataSource) {
+	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
 

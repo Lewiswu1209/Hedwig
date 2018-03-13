@@ -11,6 +11,16 @@ public class Session {
 		super();
 		this.conn = conn;
 	}
+	
+	private SessionFactory sessionFactory = null;
+
+	SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	private Connection conn = null;
 
