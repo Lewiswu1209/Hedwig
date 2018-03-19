@@ -11,6 +11,8 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
+//import org.hedwig.core.SQLSupport.SQLSupport;
 import org.hedwig.core.config.Configuration;
 import org.hedwig.core.context.Context;
 import org.hedwig.core.controller.ActionAdapter;
@@ -18,8 +20,8 @@ import org.hedwig.core.controller.ActionHandler;
 import org.hedwig.core.scheduler.Scheduler;
 import org.hedwig.core.view.AbstractView;
 import org.hedwig.core.view.ViewFactroy;
-import org.hedwig.sql.source.DataSourceFactory;
-import org.hedwig.sql.transaction.Transaction;
+import org.hedwig.sql.pool.Pool;
+import org.hedwig.sql.session.SessionFactory;
 import org.hedwig.textutils.Charsets;
 import org.hedwig.textutils.TextUtil;
 
@@ -44,12 +46,15 @@ public final class DispatcherServlet extends HttpServlet {
 			}
 		} catch (ClassNotFoundException e) {
 		}
-		
+
 		if (Configuration.getDatabaseUrl()!=null) {
-			DataSource dataSource = DataSourceFactory.getDataSource(Configuration.getDatabaseUrl(),
-					Configuration.getDatabaseUser(),
-					Configuration.getDatabasePassword());
-			Transaction.setDataSource(dataSource);
+			PoolProperties properties = new PoolProperties();
+			properties.setUrl(Configuration.getDatabaseUrl());
+			properties.setPassword(Configuration.getDatabaseUser());
+			properties.setUsername(Configuration.getDatabaseUser());
+			DataSource dataSource = Pool.getDataSource(properties);
+			//SQLSupport.sessionFactory = new SessionFactory();
+			//SQLSupport.sessionFactory.setDataSource(dataSource);
 		}
 		
 		getServletContext().setAttribute("APP_ROOT", Configuration.getContextPath());
