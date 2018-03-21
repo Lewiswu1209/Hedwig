@@ -4,15 +4,12 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 
 public final class Configuration {
-	
+
 	public static final String KEY_CONTENT_PATH = "CONTENT_PATH";
 	public static final String KEY_WEB_ROOT = "WEB_ROOT";
 	public static final String KEY_CHARSET = "CHARSET";
 	public static final String KEY_ACTION_EXTENSION = "ACTION_EXTENSION";
-	public static final String KEY_DATABASE_URL = "DATABASE_URL";
-	public static final String KEY_DATABASE_USER = "DATABASE_USER";
-	public static final String KEY_DATABASE_PASSWORD = "DATABASE_PASSWORD";
-	
+
     protected static HashMap<String, Object> data = new HashMap<String, Object>();
 
     public static void set(String key, Object value){
@@ -72,30 +69,6 @@ public final class Configuration {
 
 	public static void setCharset(Charset charset) {
 		set(KEY_CHARSET, charset);
-	}
-	
-	public static String getDatabaseUrl() {
-		return get(KEY_DATABASE_URL);
-	}
-
-	public static void setDatabaseUrl(String url) {
-		set(KEY_DATABASE_URL, url);
-	}
-	
-	public static String getDatabaseUser() {
-		return get(KEY_DATABASE_USER);
-	}
-
-	public static void setDatabaseUser(String username) {
-		set(KEY_DATABASE_USER, username);
-	}
-	
-	public static String getDatabasePassword() {
-		return get(KEY_DATABASE_PASSWORD);
-	}
-
-	public static void setDatabasePassword(String password) {
-		set(KEY_DATABASE_PASSWORD, password);
 	}
 
 	public static String getActionExtension() {

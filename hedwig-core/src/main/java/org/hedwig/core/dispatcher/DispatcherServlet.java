@@ -47,16 +47,6 @@ public final class DispatcherServlet extends HttpServlet {
 		} catch (ClassNotFoundException e) {
 		}
 
-		if (Configuration.getDatabaseUrl()!=null) {
-			PoolProperties properties = new PoolProperties();
-			properties.setUrl(Configuration.getDatabaseUrl());
-			properties.setPassword(Configuration.getDatabaseUser());
-			properties.setUsername(Configuration.getDatabaseUser());
-			DataSource dataSource = Pool.getDataSource(properties);
-			//SQLSupport.sessionFactory = new SessionFactory();
-			//SQLSupport.sessionFactory.setDataSource(dataSource);
-		}
-		
 		getServletContext().setAttribute("APP_ROOT", Configuration.getContextPath());
 	}
 
