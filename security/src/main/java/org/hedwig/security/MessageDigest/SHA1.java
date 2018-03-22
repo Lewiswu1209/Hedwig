@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.NoSuchAlgorithmException;
 
-public class SHA extends MessageDigestSupport {
+public class SHA1 extends MessageDigestSupport {
 
 	public static String getSHA1(String str, Charset encoding)
 			throws UnsupportedEncodingException {

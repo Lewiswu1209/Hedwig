@@ -7,12 +7,8 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tomcat.jdbc.pool.PoolProperties;
-//import org.hedwig.core.SQLSupport.SQLSupport;
 import org.hedwig.core.config.Configuration;
 import org.hedwig.core.context.Context;
 import org.hedwig.core.controller.ActionAdapter;
@@ -20,8 +16,6 @@ import org.hedwig.core.controller.ActionHandler;
 import org.hedwig.core.scheduler.Scheduler;
 import org.hedwig.core.view.AbstractView;
 import org.hedwig.core.view.ViewFactroy;
-import org.hedwig.sql.pool.Pool;
-import org.hedwig.sql.session.SessionFactory;
 import org.hedwig.textutils.Charsets;
 import org.hedwig.textutils.TextUtil;
 
