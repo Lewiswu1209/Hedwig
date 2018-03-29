@@ -51,7 +51,6 @@ public abstract class AbstractCrawler {
     }
 
     public void start(int depth) throws Exception {
-
         if (!resumable) {
             if (dbManager.isExists()) {
                 dbManager.clear();
@@ -72,7 +71,8 @@ public abstract class AbstractCrawler {
         }
 
         status = STATUS_RUNNING;
-        for (int i = 0; i < depth; i++) {
+
+		for (int i = 0; i < depth; i++) {
             if (status == STATUS_STOPED) {
                 break;
             }
@@ -91,7 +91,7 @@ public abstract class AbstractCrawler {
         dbManager.close();
         afterStop();
     }
-
+    
     public void afterStop(){
 
     }
