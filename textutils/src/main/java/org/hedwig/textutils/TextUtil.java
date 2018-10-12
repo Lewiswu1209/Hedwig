@@ -18,7 +18,7 @@ final public class TextUtil {
 	 * @param regex
 	 * @return
 	 */
-	public static Collection<String> getSubstringByRegex(String string, String regex) {
+	public static Collection<String> getSubstringsByRegex(String string, String regex) {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(string);
 
@@ -30,6 +30,22 @@ final public class TextUtil {
 		}
 
 		return subStrSet;
+	}
+	
+	public static String getSubstringByRegex(String string, String regex) {
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(string);
+
+		String subStr = null;
+		if (matcher.find()) {
+			subStr = matcher.group();
+		}
+
+		return subStr;
+	}
+	
+	public static void main(String[] argv) {
+		System.out.println(TextUtil.getSubstringByRegex("姓名：如斯", "(?<=姓名：).*"));
 	}
 
 	/**
