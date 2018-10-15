@@ -44,8 +44,16 @@ final public class TextUtil {
 		return subStr;
 	}
 	
-	public static void main(String[] argv) {
-		System.out.println(TextUtil.getSubstringByRegex("姓名：如斯", "(?<=姓名：).*"));
+	public static String getSubstringByRegex(String string, String regex, int offset) {
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(string);
+
+		String subStr = null;
+		if (matcher.find(offset)) {
+			subStr = matcher.group();
+		}
+
+		return subStr;
 	}
 
 	/**
