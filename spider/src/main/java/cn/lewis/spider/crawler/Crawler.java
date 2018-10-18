@@ -1,99 +1,115 @@
 package cn.lewis.spider.crawler;
 
-import cn.lewis.spider.fetcher.Executor;
-import cn.lewis.spider.fetcher.Visitor;
-import cn.lewis.spider.model.CrawlerItem;
-import cn.lewis.spider.model.CrawlerItemList;
-import cn.lewis.spider.model.Links;
-import cn.lewis.spider.model.RegexRule;
-import cn.lewis.spider.model.Page;
+import cn.edu.hfut.dmic.webcollector.fetcher.Executor;
+import cn.edu.hfut.dmic.webcollector.fetcher.Visitor;
+import cn.edu.hfut.dmic.webcollector.fetcher.VisitorMethodDispatcher;
+import cn.edu.hfut.dmic.webcollector.model.CrawlDatum;
+import cn.edu.hfut.dmic.webcollector.model.CrawlDatums;
+import cn.edu.hfut.dmic.webcollector.model.Page;
+import cn.edu.hfut.dmic.webcollector.net.Requester;
+import cn.edu.hfut.dmic.webcollector.util.ConfigurationUtils;
+import cn.edu.hfut.dmic.webcollector.util.RegexRule;
+import cn.lewis.spider.requester.HttpRequester;
 
-import org.hedwig.net.http.HttpClient;
-import org.hedwig.net.http.HttpGet;
-import org.hedwig.net.http.HttpRequest;
-import org.hedwig.net.http.HttpResponse;
-import org.jsoup.nodes.Document;
+public abstract class Crawler extends cn.edu.hfut.dmic.webcollector.crawler.Crawler implements Executor, Visitor{
 
-import java.net.HttpURLConnection;
-
-public abstract class Crawler extends AbstractCrawler implements Executor, Visitor {
-
+    /**
+     * 是否自动抽取符合正则的链接并加入后续任务
+     */
     protected boolean autoParse = true;
     protected Visitor visitor;
+    //protected Requester requester;
+
+    protected VisitorMethodDispatcher visitorMethodDispatcher;
 
     public Crawler(boolean autoParse) {
         this.autoParse = autoParse;
+        //this.requester = new HttpRequester();
         this.visitor = this;
         this.executor = this;
     }
-    
-    public HttpRequest OnRequest(CrawlerItem item) {
-    	HttpRequest request = new HttpGet(item.getUrl());
-        if(conf.getDefaultUserAgent()!=null){
-        	request.setUserAgent(conf.getDefaultUserAgent());
-        }
-        request.setMaxRedirectCount(conf.getMaxRedirect());
-        request.setConnectTimeout(conf.getConnectTimeout());
-        request.setReadTimeout(conf.getReadTimeout());
-        return request;
+
+    @Override
+    public void start(int depth) throws Exception {
+        this.visitorMethodDispatcher = new VisitorMethodDispatcher(visitor, autoParse, regexRule);
+        ConfigurationUtils.setTo(this, this.visitorMethodDispatcher);
+        super.start(depth);
     }
 
+    @Override
+    protected void registerOtherConfigurations() {
+        super.registerOtherConfigurations();
+        //ConfigurationUtils.setTo(this, requester);
+        ConfigurationUtils.setTo(this, visitor);
+    }
+
+    /**
+     * URL正则约束
+     */
     protected RegexRule regexRule = new RegexRule();
 
-    public void execute(CrawlerItem item, CrawlerItemList newDetectedItemList) throws Exception {
-    	HttpRequest request = OnRequest(item);
-        HttpClient client = new HttpClient(request);
-        HttpResponse response = client.connect();
-        Page page = new Page(
-        		item,
-                response.getCode(),
-                response.getContentType(),
-                response.getContent()
-        );
-        client.disconnect();
-        if (page.code()==HttpURLConnection.HTTP_OK) {
-	        visitor.visit(page, newDetectedItemList);
-	        
-	        if (autoParse && !regexRule.isEmpty()) {
-	            parseLink(page, newDetectedItemList);
-	        }
-	        afterVisit(page, newDetectedItemList);
-        }
+    @Override
+    public void execute(CrawlDatum datum, CrawlDatums next) throws Exception {
+        Page page = getRequester().getResponse(datum);
+        visitorMethodDispatcher.dispatch(page, next);
     }
 
-    public void afterVisit(Page page, CrawlerItemList newDetectedItemList) {
-    	
-    }
-    
-    protected void parseLink(Page page, CrawlerItemList newDetectedItemList) {
-        String conteType = page.contentType();
-        if (conteType != null && conteType.contains("text/html")) {
-            Document doc = page.doc();
-            if (doc != null) {
-                Links links = new Links().addByRegex(doc, regexRule, conf.getAutoDetectImg());
-                newDetectedItemList.add(links);
-            }
-        }
-    }
-
+    /**
+     * 添加URL正则约束
+     *
+     * @param urlRegex URL正则约束
+     */
     public void addRegex(String urlRegex) {
         regexRule.addRule(urlRegex);
     }
 
+    /**
+     *
+     * @return 返回是否自动抽取符合正则的链接并加入后续任务
+     */
     public boolean isAutoParse() {
         return autoParse;
     }
 
+    /**
+     * 设置是否自动抽取符合正则的链接并加入后续任务
+     *
+     * @param autoParse 是否自动抽取符合正则的链接并加入后续任务
+     */
     public void setAutoParse(boolean autoParse) {
         this.autoParse = autoParse;
     }
 
+    /**
+     * 获取正则规则
+     *
+     * @return 正则规则
+     */
     public RegexRule getRegexRule() {
         return regexRule;
     }
 
+    /**
+     * 设置正则规则
+     *
+     * @param regexRule 正则规则
+     */
     public void setRegexRule(RegexRule regexRule) {
         this.regexRule = regexRule;
     }
 
+    /**
+     * 获取Visitor
+     *
+     * @return Visitor
+     */
+    public Visitor getVisitor() {
+        return visitor;
+    }
+
+    public Requester getRequester() {
+    	HttpRequester requester = new HttpRequester();
+    	ConfigurationUtils.setTo(this, requester);
+    	return requester;
+    }
 }
