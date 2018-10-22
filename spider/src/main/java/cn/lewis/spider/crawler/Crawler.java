@@ -50,7 +50,7 @@ public abstract class Crawler extends cn.edu.hfut.dmic.webcollector.crawler.Craw
 
     @Override
     public void execute(CrawlDatum datum, CrawlDatums next) throws Exception {
-        Page page = getRequester().getResponse(datum);
+        Page page = getRequester(datum).getResponse(datum);
         visitorMethodDispatcher.dispatch(page, next);
     }
 
@@ -107,7 +107,7 @@ public abstract class Crawler extends cn.edu.hfut.dmic.webcollector.crawler.Craw
         return visitor;
     }
 
-    public Requester getRequester() {
+    public Requester getRequester(CrawlDatum datum) {
     	HttpRequester requester = new HttpRequester();
     	ConfigurationUtils.setTo(this, requester);
     	return requester;
