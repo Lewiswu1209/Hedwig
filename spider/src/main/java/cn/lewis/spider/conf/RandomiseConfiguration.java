@@ -10,8 +10,8 @@ public class RandomiseConfiguration extends Configuration {
 
 	public RandomiseConfiguration(Configuration conf) {
 		this.conf = conf;
-		this.setDefaultUserAgent("Mozilla/5.0 (Windows NT 10.0; WOW64; rv:56.0) Gecko/20100101 Firefox/56.0");
-		this.setExecuteInterval(-5000);
+		this.setDefaultUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0");
+		this.setExecuteInterval(-50000);
 	}
 
 	@Override
