@@ -192,5 +192,4 @@ public class RandomiseConfiguration extends Configuration {
 		}
 		return interval;
 	}
-
 }
